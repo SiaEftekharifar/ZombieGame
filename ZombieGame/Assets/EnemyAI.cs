@@ -10,27 +10,44 @@ public class EnemyAI : MonoBehaviour {
 
     NavMeshAgent navMesh;
     float distanceToPlayer = Mathf.Infinity;
-
+    bool isProvoked = false;
     void Start() {
         navMesh = GetComponent<NavMeshAgent>();
     }
 
     void Update() {
-        ProcessDestanceToPlayer();
+        ProcessAttackToPlayer();
     }
 
-    private void ProcessDestanceToPlayer() {
+    private void ProcessAttackToPlayer() {
         distanceToPlayer = Vector3.Distance(playerTransform.position, transform.position);
-        if (distanceToPlayer <= chaseRange) {
-            AttackPlayer();
+
+        if (isProvoked) {
+            EngageTarget();
+        }
+        else if (distanceToPlayer <= chaseRange) {
+            isProvoked = true;
+            //  AttackPlayer();
         }
     }
 
-    private void AttackPlayer() {
+    private void EngageTarget() {
+
+        if (distanceToPlayer >= navMesh.stoppingDistance) {
+            ChasePlayer();
+        }else if (distanceToPlayer <= navMesh.stoppingDistance) {
+
+            AttackPlayer();
+        }
+
+    }
+    private void ChasePlayer() {
         navMesh.destination = playerTransform.position;
     }
 
-
+    private void AttackPlayer() {
+        print("Attack");
+    }
     void OnDrawGizmosSelected() {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, chaseRange);
