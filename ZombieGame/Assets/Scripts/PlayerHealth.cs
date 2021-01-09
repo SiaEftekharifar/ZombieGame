@@ -10,7 +10,9 @@ public class PlayerHealth : MonoBehaviour {
 
         playerHealth = playerHealth - damage;
         if (playerHealth <1) {
-            print("Player is dead");
+
+            GetComponent<DeathHandler>().EnableGameOverCanvas();
+            
         }
     }
 }

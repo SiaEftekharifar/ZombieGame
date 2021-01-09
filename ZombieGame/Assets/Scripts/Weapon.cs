@@ -12,18 +12,41 @@ public class Weapon : MonoBehaviour {
 
     [SerializeField] ParticleSystem gunFlashVFX;
     [SerializeField] GameObject hitEffectVFX;
+    [SerializeField] AmmoType ammoType;
 
+    [SerializeField] float timeBetweenShoot;
+
+    Ammo ammo;
+
+    bool canShoot = true;
+
+    private void OnEnable() {
+
+        canShoot = true;
+    }
+
+    void Start() {
+        ammo = FindObjectOfType<Ammo>();
+    }
     void Update()
     {
-       if (Input.GetButton("Fire1")) {
-           Shoot();
+
+       if (Input.GetMouseButtonDown(0) && canShoot == true) {
+          StartCoroutine(Shoot());
        }
     }
 
-    private void Shoot() {
-        ProcessRayCast();
-        ProcessGunFlash();
-    }
+     IEnumerator Shoot() {
+         canShoot = false;
+
+        if (ammo.CountAmmo(ammoType) > 0) {
+            ProcessRayCast();
+            ProcessGunFlash();
+            ammo.DecreaseAmmo(ammoType);
+        }
+        yield return new WaitForSeconds(timeBetweenShoot);
+        canShoot = true;
+     }
 
     private void ProcessRayCast() {
         RaycastHit hit;
