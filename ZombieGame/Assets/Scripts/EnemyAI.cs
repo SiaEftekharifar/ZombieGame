@@ -12,11 +12,20 @@ public class EnemyAI : MonoBehaviour {
     NavMeshAgent navMesh;
     float distanceToPlayer = Mathf.Infinity;
     bool isProvoked = false;
+    EnemyHealth enemyHealth;
+
+
     void Start() {
         navMesh = GetComponent<NavMeshAgent>();
+        enemyHealth = GetComponent<EnemyHealth>();
     }
 
     void Update() {
+        if (enemyHealth.IsDead()) {
+            enabled = false;
+            navMesh.enabled = false;
+        }
+
         ProcessAttackToPlayer();
     }
 
@@ -28,7 +37,7 @@ public class EnemyAI : MonoBehaviour {
         }
         else if (distanceToPlayer <= chaseRange) {
             isProvoked = true;
-            //  AttackPlayer();
+            AttackPlayer();
         }
     }
 
@@ -48,9 +57,13 @@ public class EnemyAI : MonoBehaviour {
 
     }
     private void ChasePlayer() {
-        navMesh.destination = playerTransform.position;
-        GetComponent<Animator>().SetTrigger("Move");
-        GetComponent<Animator>().SetBool("Attack", false);
+       
+
+            navMesh.destination = playerTransform.position;
+            GetComponent<Animator>().SetTrigger("Move");
+            GetComponent<Animator>().SetBool("Attack", false);
+
+        
 
     }
 

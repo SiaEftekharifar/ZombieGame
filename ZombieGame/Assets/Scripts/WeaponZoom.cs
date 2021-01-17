@@ -16,6 +16,10 @@ public class WeaponZoom : MonoBehaviour {
         HandleZoom();
     }
 
+    private void OnDisable() {
+        FPScamera.fieldOfView = zoomedOut;
+    }
+
     private void HandleZoom() {
 
         if (Input.GetMouseButtonDown(1)) {
@@ -23,12 +27,10 @@ public class WeaponZoom : MonoBehaviour {
             if (zoomToggle == false) {
                 zoomToggle = true;
                 FPScamera.fieldOfView = zoomedIn;
-
             }
             else {
                 zoomToggle = false;
                 FPScamera.fieldOfView = zoomedOut;
-
             }
         }
     }

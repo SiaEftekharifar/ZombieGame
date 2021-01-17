@@ -6,13 +6,26 @@ public class EnemyHealth : MonoBehaviour {
 
     [SerializeField] float enemyHealth = 100f;
 
+    bool isDead = false;
 
+    public bool IsDead() {
+
+      return isDead;
+    }
     public void EnemyDamage(float damagePerHit) {
 
         BroadcastMessage("OnDamageTaken");
         enemyHealth = enemyHealth - damagePerHit;
         if (enemyHealth < 1) {
-            Destroy(gameObject);
+            Die();
         }
+    }
+
+    private void Die() {
+
+        if (isDead) return;
+
+        isDead = true;
+        GetComponent<Animator>().SetTrigger("die");
     }
 }

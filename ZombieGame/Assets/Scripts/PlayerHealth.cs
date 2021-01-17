@@ -12,7 +12,6 @@ public class PlayerHealth : MonoBehaviour {
         if (playerHealth <1) {
 
             GetComponent<DeathHandler>().EnableGameOverCanvas();
-            
         }
     }
 }
